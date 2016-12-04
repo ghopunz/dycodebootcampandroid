@@ -1,5 +1,6 @@
 package id.co.dycode.ghopunz.calculator;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnModulus;
 
 
+    private boolean showToast = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,11 +56,41 @@ public class MainActivity extends AppCompatActivity {
         input1.setText("0");
         input2.setText("0");
 
+//        Toast.makeText(this, "ini onCreate", Toast.LENGTH_SHORT).show();
         //cara lama
 //        Button btnAdd = (Button) findViewById(R.id.btn_add);
 //        Button btnMinus = (Button) findViewById(R.id.btn_minus);
 //        Button btnDevided = (Button) findViewById(R.id.btn_devided);
 //        Button btnMultiple = (Button) findViewById(R.id.btn_multiple);
+    }
+
+
+
+    //buat change orientation
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        input1.setText("0");
+        input2.setText("0");
+
+        if(showToast){
+            Toast.makeText(this, "Selamat datang kembali", Toast.LENGTH_SHORT).show();
+        }
+
+        showToast = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        input1.setText("");
+        input2.setText("");
     }
 
     @OnClick({R.id.btn_add, R.id.btn_minus, R.id.btn_devided, R.id.btn_multiple,
@@ -88,7 +120,12 @@ public class MainActivity extends AppCompatActivity {
                 //pembagian
                 case R.id.btn_devided:
 
-                    hasil.setText("" + (inputInt1 / inputInt2));
+                    try{
+                        hasil.setText("" + (inputInt1 / inputInt2)); 
+                    }catch (Exception e){
+                        Toast.makeText(this, "Hasil tidak terdifinisikan", Toast.LENGTH_SHORT).show();
+                    }
+                    
 
                     break;
 
@@ -101,7 +138,11 @@ public class MainActivity extends AppCompatActivity {
 
                 //sisa bagi
                 case R.id.btn_modulus:
-                    hasil.setText("" + (inputInt1 % inputInt2));
+                    try{
+                        hasil.setText("" + (inputInt1 % inputInt2));
+                    }catch (Exception e){
+                        Toast.makeText(this, "Hasil tidak terdifinisikan", Toast.LENGTH_SHORT).show();
+                    }
 
                     break;
 
